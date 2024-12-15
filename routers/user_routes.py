@@ -1,12 +1,8 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from models.user import UserLogin
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-class User(BaseModel):
-    username:str
-    password:str
-
 @router.post("/login")
-def login(user: User):
+def login(user: UserLogin):
     return {"username": user.username}
