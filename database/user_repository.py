@@ -10,3 +10,9 @@ class UserRepository:
             User.username == username,
             User.password == password
         ).first()
+    
+    def register_user(self, usrname: str, passw: str):
+        user = User(username=usrname, password=passw)
+        self.db.add(user)
+        self.db.commit()
+        return user
