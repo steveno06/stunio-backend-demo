@@ -19,7 +19,7 @@ class UserBase(BaseModel):
     user_type: str
 
 class StudentRegistration(UserBase):
-    school_name: str
+    school: str
     major: str
     graduation_year: int
 

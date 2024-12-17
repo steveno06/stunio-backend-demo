@@ -41,7 +41,7 @@ class UserRepository:
                     business_size=registration_data['business_size']
                 )
                 self.db.add(business)
-                
+
             self.db.commit()
             return user
         

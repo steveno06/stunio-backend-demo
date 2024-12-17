@@ -3,8 +3,8 @@ from database.config import Base
 import enum
 
 class UserType(enum.Enum):
-    STUDENT = "student"
-    BUSINESS = "business"
+    STUDENT = "STUDENT"
+    BUSINESS = "BUSINESS"
 
 class User(Base):
     __tablename__ = "users"
