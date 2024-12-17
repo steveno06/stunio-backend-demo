@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
-from models.user_model import User
+from models.user_model import User, UserType
+from models.student_model import Student
+from models.business_model import Business
 
 class UserRepository:
     def __init__(self, db: Session):
@@ -11,8 +13,38 @@ class UserRepository:
             User.password == password
         ).first()
     
-    def register_user(self, usrname: str, passw: str):
-        user = User(username=usrname, password=passw)
-        self.db.add(user)
-        self.db.commit()
-        return user
+    def register_user(self, registration_data: dict) -> User | None:
+        try:
+            user = User(
+                username=registration_data['username'],
+                password=registration_data['password'],
+                email=registration_data['email'],
+                user_type=registration_data['user_type']
+            )
+            self.db.add(user)
+            self.db.flush()
+
+            if user.user_type == UserType.STUDENT:
+                student = Student(
+                    user_id=user.id,
+                    school=registration_data['school'],
+                    major=registration_data['major'],
+                    graduation_year= registration_data['graduation_year']
+                )
+                self.db.add(student)
+            
+            elif user.user_type == UserType.BUSINESS:
+                business = Business(
+                    user_id=user.id,
+                    company_name=registration_data['company_name'],
+                    industry=registration_data['industry'],
+                    business_size=registration_data['business_size']
+                )
+                self.db.add(business)
+                
+            self.db.commit()
+            return user
+        
+        except Exception:
+            self.db.rollback()
+            return None
