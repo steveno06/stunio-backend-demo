@@ -6,3 +6,6 @@ class Job(BaseModel):
     description: str | None
     required_students: int
     event_date: str
+
+class Invite(BaseModel):
+    invite_id : int
