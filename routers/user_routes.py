@@ -13,12 +13,12 @@ def login(request: UserLogin, db: Session = Depends(get_db)):
     
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    return UserResponse(message="Login Success", user_id=user.id)
+    return UserResponse(message="Login Success", user_id=user.id, user_type=user.user_type)
 
 @router.post("/register")
 def register(request: dict, db: Session = Depends(get_db)):
     user_type = request.get("user_type")
-    
+
     if user_type == "STUDENT":
         registration_model = StudentRegistration(**request)
     elif user_type == "BUSINESS":
@@ -33,4 +33,4 @@ def register(request: dict, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=401, detail="Registration failed")
     
-    return UserResponse(message=f"{reg_data['user_type'].capitalize()} Registration Success", user_id=user.id)
+    return UserResponse(message="Registration Success", user_id=user.id, user_type=user.user_type)
