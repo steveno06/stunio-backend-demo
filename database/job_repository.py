@@ -21,3 +21,35 @@ class JobRepository:
     
     def getJobs(self):
         return self.db.query(Job).all()
+    
+    def createJobInvite(self, job_id : int, student_id : int):
+        new_job_invite = JobInvite(
+            job_id = job_id,
+            student_id=student_id,
+        )
+
+        self.db.add(new_job_invite)
+        self.db.commit()
+        self.db.refresh(new_job_invite)
+
+    def acceptJobInvite(self, invite_id : int):
+        student_invite = self.db.query(JobInvite).filter(JobInvite.id == invite_id).first()
+        
+        if not student_invite:
+            return False
+        
+        student_invite.has_accepted = True
+        self.db.commit()
+        return True
+
+    def declineJobInvite(self, invite_id : int):
+        student_invite = self.db.query(JobInvite).filter(JobInvite.id == invite_id).first()
+
+        if not student_invite:
+            return False
+        self.db.delete(student_invite)
+        self.db.commit()
+        return True
+
+    def getJobInvites(self):
+        return self.db.query(JobInvite).all()
