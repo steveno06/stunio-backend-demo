@@ -22,8 +22,6 @@ def create_job(request: Job, db: Session = Depends(get_db)):
             required_students=request.required_students,
             event_date=event_date
         )
-
-        job_repo.createJobInvite(job_id=1, student_id=1)
         return {"status": "success"}
     
     except Exception as e:
