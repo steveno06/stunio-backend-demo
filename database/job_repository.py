@@ -21,9 +21,9 @@ class JobRepository:
         self.db.commit()
         self.db.refresh(new_job)
 
-        avalaible_students = self.get_avaliable_students(num_of_students=required_students, date=event_date)
-        self.invite_students(students=avalaible_students, job_id=new_job.id)
-        
+        available_students = self.get_avaliable_students(num_of_students=required_students, date=event_date)
+        self.invite_students(students=available_students, job_id=new_job.id)
+
         return new_job
     def getJobs(self):
         return self.db.query(Job).all()
@@ -76,7 +76,7 @@ class JobRepository:
         #Find all students who are avaible for given date
         available_students = (
             self.db.query(Student)
-            .filter(~Student.id.in_(unavailable_students_ids))
+            .filter(Student.id.notin_(unavailable_students_ids) if unavailable_students_ids else True)
             .order_by(func.random())
             .limit(num_of_students)
             .all()
