@@ -24,7 +24,8 @@ class UserRepository:
             self.db.add(user)
             self.db.flush()
 
-            if user.user_type == UserType.STUDENT:
+            if user.user_type == "STUDENT":
+                print("student")
                 student = Student(
                     user_id=user.id,
                     school=registration_data['school'],
@@ -32,8 +33,9 @@ class UserRepository:
                     graduation_year= registration_data['graduation_year']
                 )
                 self.db.add(student)
+                self.db.flush()
             
-            elif user.user_type == UserType.BUSINESS:
+            elif user.user_type == "BUSINESS":
                 business = Business(
                     user_id=user.id,
                     company_name=registration_data['company_name'],
@@ -41,6 +43,7 @@ class UserRepository:
                     business_size=registration_data['business_size']
                 )
                 self.db.add(business)
+                self.db.flush()
 
             self.db.commit()
             return user
