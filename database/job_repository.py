@@ -20,7 +20,11 @@ class JobRepository:
         self.db.add(new_job)
         self.db.commit()
         self.db.refresh(new_job)
-    
+
+        avalaible_students = self.get_avaliable_students(num_of_students=required_students, date=event_date)
+        self.invite_students(students=avalaible_students, job_id=new_job.id)
+        
+        return new_job
     def getJobs(self):
         return self.db.query(Job).all()
     
@@ -79,3 +83,12 @@ class JobRepository:
         )
 
         return available_students
+
+    def invite_students(self, students: list[Student], job_id : int):
+        try:
+            for student in students:
+                self.createJobInvite(job_id=job_id, student_id=student.id)
+            return True
+        except Exception as e:
+            self.db.rollback()
+            return False
