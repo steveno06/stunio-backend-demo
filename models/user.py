@@ -7,10 +7,7 @@ class UserLogin(BaseModel):
 class UserResponse(BaseModel):
     message: str
     user_id: int
-
-class UserRegister(BaseModel):
-    username: str
-    password: str
+    user_type: str
 
 class UserBase(BaseModel):
     username: str
