@@ -1,6 +1,8 @@
 from sqlalchemy import Date
 from sqlalchemy.orm import Session
 from models.job_model import Job, JobInvite
+from models.student_model import Student
+from sqlalchemy.sql.expression import func
 
 class JobRepository:
     def __init__(self, db: Session):
@@ -53,3 +55,27 @@ class JobRepository:
 
     def getJobInvites(self):
         return self.db.query(JobInvite).all()
+    
+    def get_avaliable_students(self, num_of_students : int, date: Date):
+        
+        #Find students who are not available for given date
+        unavailable_students = (
+            self.db.query(JobInvite.student_id)
+            .join(Job, JobInvite.job_id == Job.id)
+            .filter(JobInvite.has_accepted == True, Job.event_date == date)
+            .distinct()
+            .all()
+        )
+
+        unavailable_students_ids = [student[0] for student in unavailable_students]
+
+        #Find all students who are avaible for given date
+        available_students = (
+            self.db.query(Student)
+            .filter(~Student.id.in_(unavailable_students_ids))
+            .order_by(func.random())
+            .limit(num_of_students)
+            .all()
+        )
+
+        return available_students
