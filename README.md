@@ -4,7 +4,7 @@
 
 ## My Thoughts
 
-Again here I think its a great start but there is so much more to do with this. I would have liked to implement some authenticaiton with tokens, such as JWT, to protect this back end resource. And also put more thought into the way data should be stored with the use cases of the app. What ways to match up students with new jobs that have come up? And how should we be storing the data to effeciently be used by the matching algorithim.
+Again here I think its a great start but there is so much more to do with this. I would have liked to implement some authenticaiton with tokens, such as JWT, to protect this back end resource. And also put more thought into the way data should be stored with the use cases of the app. How do we match students to jobs? And how should we be storing the data to effeciently be used by the matching algorithim.
 
 ## Front End
 
